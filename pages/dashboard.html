@@ -1,0 +1,92 @@
+<!-- ===================== DASHBOARD ===================== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>Dashboard</h2>
+        <p>Real-time overview of your inventory intelligence</p>
+    </div>
+    <div class="header-actions">
+        <div class="sim-indicator">
+            <span class="sim-dot"></span>
+            AI Simulation Active
+        </div>
+        <span class="header-time" id="headerTime"></span>
+    </div>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+    <div class="kpi-card" id="kpiTotalProducts">
+        <div class="kpi-icon purple">📦</div>
+        <div class="kpi-label">Total Products</div>
+        <div class="kpi-value" id="totalProducts">0</div>
+        <div class="kpi-change up" id="kpiProductsChange">↑ Active</div>
+    </div>
+    <div class="kpi-card" id="kpiTotalRevenue">
+        <div class="kpi-icon cyan">💰</div>
+        <div class="kpi-label">Total Revenue</div>
+        <div class="kpi-value" id="totalRevenue">$0</div>
+        <div class="kpi-change up" id="kpiRevenueChange">↑ 0%</div>
+    </div>
+    <div class="kpi-card" id="kpiTotalSales">
+        <div class="kpi-icon green">🛒</div>
+        <div class="kpi-label">Units Sold</div>
+        <div class="kpi-value" id="totalSales">0</div>
+        <div class="kpi-change up" id="kpiSalesChange">↑ 0%</div>
+    </div>
+    <div class="kpi-card" id="kpiLowStock">
+        <div class="kpi-icon orange">⚠️</div>
+        <div class="kpi-label">Low Stock Alerts</div>
+        <div class="kpi-value" id="lowStock">0</div>
+        <div class="kpi-change down" id="kpiLowStockChange">Needs Attention</div>
+    </div>
+</div>
+
+<!-- Charts + AI Insights Row -->
+<div class="dashboard-grid">
+    <div class="panel">
+        <div class="panel-header">
+            <h3>📊 Sales Performance</h3>
+            <span class="badge badge-live">● Live</span>
+        </div>
+        <div class="panel-body">
+            <div class="chart-container">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h3>🧠 AI Insights</h3>
+            <span class="badge badge-ai">AI Powered</span>
+        </div>
+        <div class="panel-body">
+            <div class="ai-insights-grid" id="aiInsightsGrid">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="panel">
+        <div class="panel-header">
+            <h3>📈 Revenue Trend</h3>
+        </div>
+        <div class="panel-body">
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-header">
+            <h3>🍩 Stock Distribution</h3>
+        </div>
+        <div class="panel-body">
+            <div class="chart-container">
+                <canvas id="stockDonutChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

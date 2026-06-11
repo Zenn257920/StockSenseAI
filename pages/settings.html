@@ -1,0 +1,62 @@
+<!-- ===================== SETTINGS ===================== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>Settings</h2>
+        <p>Configure your inventory management preferences</p>
+    </div>
+</div>
+
+<div class="settings-grid">
+    <!-- Low Stock Threshold -->
+    <div class="setting-card">
+        <h4>⚠️ Low Stock Threshold</h4>
+        <p>Set the minimum stock level before triggering AI alerts</p>
+        <div class="range-wrapper">
+            <input type="range" id="lowStockThreshold" min="1" max="50" value="5"
+                oninput="updateThreshold(this.value)" />
+            <span class="range-value" id="thresholdDisplay">5</span>
+        </div>
+    </div>
+
+    <!-- Auto Simulation -->
+    <div class="setting-card">
+        <h4>🔄 Auto Sales Simulation</h4>
+        <p>Enable background sales simulation for demo purposes</p>
+        <label class="toggle-switch">
+            <input type="checkbox" id="simToggle" checked onchange="toggleSimulation(this.checked)" />
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+
+    <!-- Simulation Speed -->
+    <div class="setting-card">
+        <h4>⚡ Simulation Speed</h4>
+        <p>How frequently auto-sales occur (in seconds)</p>
+        <div class="range-wrapper">
+            <input type="range" id="simSpeed" min="2" max="30" value="8"
+                oninput="updateSimSpeed(this.value)" />
+            <span class="range-value" id="simSpeedDisplay">8s</span>
+        </div>
+    </div>
+
+    <!-- Data Management -->
+    <div class="setting-card">
+        <h4>💾 Data Management</h4>
+        <p>Export or reset your inventory data</p>
+        <div class="export-btns">
+            <button class="btn btn-ghost btn-sm" onclick="exportJSON()">📥 Export JSON</button>
+            <button class="btn btn-ghost btn-sm" onclick="importJSON()">📤 Import JSON</button>
+            <button class="btn btn-danger btn-sm" onclick="resetData()">🗑 Reset All Data</button>
+        </div>
+        <input type="file" id="importFile" accept=".json" style="display:none"
+            onchange="handleImport(event)" />
+    </div>
+
+    <!-- Load Demo Data -->
+    <div class="setting-card full-width">
+        <h4>🎮 Demo Mode</h4>
+        <p>Load sample inventory data to explore all features instantly</p>
+        <button class="btn btn-primary" onclick="loadDemoData()">🚀 Load Demo Data (Recommended for
+            first time)</button>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<!-- ===================== FORECASTING ===================== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>AI Demand Forecasting</h2>
+        <p>Predictive analytics powered by trend analysis and seasonality modeling</p>
+    </div>
+    <div class="header-actions">
+        <span class="badge badge-ai" style="padding:8px 14px;font-size:12px;">🧠 Neural Forecast
+            Engine v2.4</span>
+    </div>
+</div>
+
+<!-- Forecast Summary Cards -->
+<div class="forecast-summary">
+    <div class="forecast-stat">
+        <div class="stat-value" id="forecast7d" style="color:var(--accent-secondary);">—</div>
+        <div class="stat-label">7-Day Forecast (units)</div>
+    </div>
+    <div class="forecast-stat">
+        <div class="stat-value" id="forecast30d" style="color:var(--accent-primary);">—</div>
+        <div class="stat-label">30-Day Forecast (units)</div>
+    </div>
+    <div class="forecast-stat">
+        <div class="stat-value" id="forecastConfidence" style="color:var(--accent-success);">—</div>
+        <div class="stat-label">Confidence Score</div>
+    </div>
+</div>
+
+<!-- Forecast Chart -->
+<div class="panel" style="margin-bottom:20px;">
+    <div class="panel-header">
+        <h3>🔮 Demand Forecast — Next 14 Days</h3>
+        <span class="badge badge-ai">AI Generated</span>
+    </div>
+    <div class="panel-body">
+        <div class="chart-container" style="height:320px;">
+            <canvas id="forecastChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Reorder Suggestions -->
+<div class="panel">
+    <div class="panel-header">
+        <h3>📦 Smart Reorder Suggestions</h3>
+        <span class="badge badge-ai">Auto-Calculated</span>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Current Stock</th>
+                    <th>Daily Velocity</th>
+                    <th>Days Until Stockout</th>
+                    <th>Reorder Qty</th>
+                    <th>Priority</th>
+                </tr>
+            </thead>
+            <tbody id="reorderTable"></tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+<!-- ===================== PRODUCTS ===================== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>Product Management</h2>
+        <p>Add, edit, and manage your inventory items</p>
+    </div>
+    <div class="header-actions">
+        <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+</div>
+
+<!-- Add Product Form -->
+<div class="panel" style="margin-bottom:20px;">
+    <div class="panel-header">
+        <h3>➕ Add New Product</h3>
+    </div>
+    <div class="panel-body">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Product Name</label>
+                <input id="productName" class="form-input" placeholder="e.g. Wireless Headphones" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Stock Qty</label>
+                <input id="productStock" class="form-input" type="number" placeholder="100" min="0" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Price ($)</label>
+                <input id="productPrice" class="form-input" type="number" placeholder="29.99" min="0"
+                    step="0.01" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select id="productCategory" class="form-select">
+                    <option value="Electronics">Electronics</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Food">Food &amp; Beverage</option>
+                    <option value="Home">Home &amp; Garden</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">&nbsp;</label>
+                <button class="btn btn-primary" onclick="addProduct()">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input id="productSearch" placeholder="Search products by name or category..."
+        oninput="renderProducts()" />
+</div>
+
+<!-- Products Table -->
+<div class="panel">
+    <div class="panel-header">
+        <h3>📋 Inventory Items <span id="productCount"
+                style="color:var(--text-muted);font-weight:400;font-size:13px;"></span></h3>
+        <div style="display:flex;gap:6px;">
+            <button class="btn btn-ghost btn-sm" onclick="sortProducts('name')">Sort: Name</button>
+            <button class="btn btn-ghost btn-sm" onclick="sortProducts('stock')">Sort: Stock</button>
+            <button class="btn btn-ghost btn-sm" onclick="sortProducts('price')">Sort: Price</button>
+        </div>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Stock Level</th>
+                    <th>Price</th>
+                    <th>Sales</th>
+                    <th>Revenue</th>
+                    <th>ABC</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productTable"></tbody>
+        </table>
+    </div>
+    <div id="emptyProductState" class="empty-state" style="display:none;">
+        <div class="empty-icon">📦</div>
+        <h3>No products yet</h3>
+        <p>Add your first product above to get started with AI-powered inventory management.</p>
+    </div>
+</div>

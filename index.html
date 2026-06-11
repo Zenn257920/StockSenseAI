@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Sense — Intelligent Inventory Management</title>
+    <meta name="description"
+        content="AI-powered inventory management system with demand forecasting, anomaly detection, and smart analytics." />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- HAMBURGER BUTTON (mobile) -->
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="app-container">
+
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🧠</div>
+                <div class="sidebar-brand">
+                    <h1>Stock Sense AI</h1>
+                    <span>Inventory OS</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-label">Overview</div>
+                <button class="nav-btn active" onclick="showSection('dashboard')" id="nav-dashboard">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('products')" id="nav-products">
+                    <span class="icon">📦</span>
+                    <span>Products</span>
+                </button>
+
+                <div class="nav-label">AI Engine</div>
+                <button class="nav-btn" onclick="showSection('forecast')" id="nav-forecast">
+                    <span class="icon">🔮</span>
+                    <span>Forecasting</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('alerts')" id="nav-alerts">
+                    <span class="icon">🚨</span>
+                    <span>AI Alerts</span>
+                    <span class="nav-badge" id="alertBadge">0</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('analytics')" id="nav-analytics">
+                    <span class="icon">📈</span>
+                    <span>Analytics</span>
+                </button>
+
+                <div class="nav-label">Tools</div>
+                <button class="nav-btn" onclick="showSection('assistant')" id="nav-assistant">
+                    <span class="icon">🤖</span>
+                    <span>AI Assistant</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('settings')" id="nav-settings">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-info">
+                    <div class="status-dot"></div>
+                    <div class="info-text">
+                        <strong>AI Engine Active</strong>
+                        Monitoring in real-time
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <div class="main-content">
+            <!-- Page content is dynamically loaded here -->
+            <section id="page-container" class="section active">
+                <!-- Loaded via fetch from pages/ folder -->
+            </section>
+        </div>
+    </div>
+
+    <script src="pages.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>

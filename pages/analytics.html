@@ -1,0 +1,66 @@
+<!-- ===================== ANALYTICS ===================== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>Advanced Analytics</h2>
+        <p>Deep performance insights and inventory intelligence</p>
+    </div>
+</div>
+
+<!-- Analytics KPIs -->
+<div class="kpi-grid" style="margin-bottom:24px;">
+    <div class="kpi-card">
+        <div class="kpi-icon green">📊</div>
+        <div class="kpi-label">Inventory Turnover</div>
+        <div class="kpi-value" id="turnoverRate">0x</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon cyan">💎</div>
+        <div class="kpi-label">Avg. Order Value</div>
+        <div class="kpi-value" id="avgOrderValue">$0</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon purple">🏆</div>
+        <div class="kpi-label">Top Category</div>
+        <div class="kpi-value" id="topCategory" style="font-size:20px;">—</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon orange">📉</div>
+        <div class="kpi-label">Stock Utilization</div>
+        <div class="kpi-value" id="stockUtil">0%</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Category Breakdown -->
+    <div class="panel">
+        <div class="panel-header">
+            <h3>🏷️ Category Revenue Breakdown</h3>
+        </div>
+        <div class="panel-body">
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Performers -->
+    <div class="panel">
+        <div class="panel-header">
+            <h3>🏆 Top Performers</h3>
+        </div>
+        <div class="panel-body" id="topPerformers">
+            <!-- Filled by JS -->
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-header">
+        <h3>📊 Sales vs Stock Comparison</h3>
+    </div>
+    <div class="panel-body">
+        <div class="chart-container">
+            <canvas id="salesVsStockChart"></canvas>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<!-- ===================== AI ASSISTANT ===================== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h2>AI Assistant</h2>
+        <p>Ask questions about your inventory in natural language</p>
+    </div>
+    <div class="header-actions">
+        <span class="badge badge-ai" style="padding:8px 14px;font-size:12px;">🧠 NexusAI GPT
+            v3.1</span>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message ai">
+                <div class="chat-avatar">🧠</div>
+                <div class="chat-bubble">
+                    👋 Hi! I'm your NexusAI inventory assistant. I can analyze your stock levels, sales
+                    trends, and give you smart recommendations. Try asking me something!
+                </div>
+            </div>
+        </div>
+        <div class="chat-suggestions" id="chatSuggestions">
+            <button class="chat-suggestion-btn" onclick="askAI('What is my best selling product?')">🔥
+                Best seller?</button>
+            <button class="chat-suggestion-btn" onclick="askAI('Which products need restock?')">📦 Need
+                restock?</button>
+            <button class="chat-suggestion-btn" onclick="askAI('Show me revenue summary')">💰 Revenue
+                summary</button>
+            <button class="chat-suggestion-btn" onclick="askAI('How is my inventory health?')">🏥
+                Inventory health</button>
+            <button class="chat-suggestion-btn" onclick="askAI('What are the current trends?')">📈
+                Current trends</button>
+        </div>
+        <div class="chat-input-wrapper">
+            <input id="chatInput" placeholder="Ask NexusAI anything about your inventory..."
+                onkeypress="if(event.key==='Enter')sendChat()" />
+            <button class="btn btn-primary" onclick="sendChat()">Send ➤</button>
+        </div>
+    </div>
+</div>
