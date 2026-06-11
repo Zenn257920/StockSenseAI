@@ -1341,11 +1341,13 @@ tbody td:first-child {
   backdrop-filter: blur(3px);
   z-index: 150;
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--transition-normal);
 }
 
 .sidebar-overlay.visible {
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* ---------- RESPONSIVE: Tablet (≤1200px) ---------- */
@@ -1385,9 +1387,14 @@ tbody td:first-child {
     transform: translateX(0);
   }
 
-  /* Show overlay */
+  /* Show overlay — pointer-events controlled via .visible class */
   .sidebar-overlay {
     display: block;
+    pointer-events: none;
+  }
+
+  .sidebar-overlay.visible {
+    pointer-events: auto;
   }
 
   /* Restore sidebar labels/text */
@@ -1469,10 +1476,33 @@ tbody td:first-child {
   .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+    z-index: 1;
   }
 
   table {
     min-width: 560px;
+  }
+
+  /* Ensure all interactive elements are clickable on mobile */
+  .btn, .nav-btn, .chat-suggestion-btn, .toggle-switch,
+  input, select, textarea, button {
+    -webkit-tap-highlight-color: rgba(99, 102, 241, 0.15);
+    touch-action: manipulation;
+  }
+
+  /* Larger touch targets for small buttons */
+  .btn-sm {
+    padding: 8px 14px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  /* Fix panel header sort buttons wrapping */
+  .panel-header > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
   /* Panels */
@@ -1528,7 +1558,36 @@ tbody td:first-child {
   /* Export buttons wrap */
   .export-btns {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .export-btns .btn {
+    justify-content: center;
+  }
+
+  /* Settings toggle and range need more spacing */
+  .setting-card {
+    padding: 16px;
+  }
+
+  .range-wrapper {
+    padding: 4px 0;
+  }
+
+  /* Chat suggestion buttons wrap better */
+  .chat-suggestion-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  /* Alert items better spacing */
+  .alert-item {
+    padding: 12px;
+  }
+
+  /* Page header actions — buttons need to be reachable */
+  .header-actions .btn {
+    min-height: 36px;
   }
 }
 
@@ -1547,7 +1606,39 @@ tbody td:first-child {
   }
 
   .main-content {
-    padding: 66px 12px 20px;
+    padding: 66px 10px 20px;
+  }
+
+  /* Chat input bigger for thumb typing */
+  .chat-input-wrapper input {
+    font-size: 16px; /* Prevents iOS auto-zoom on focus */
+    padding: 12px 14px;
+  }
+
+  .chat-input-wrapper .btn {
+    padding: 10px 16px;
+    min-height: 44px;
+  }
+
+  /* Settings cards full width */
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Product form needs more spacing */
+  .form-group {
+    margin-bottom: 2px;
+  }
+
+  .form-input, .form-select {
+    font-size: 16px; /* Prevents iOS auto-zoom */
+    padding: 12px 14px;
+  }
+
+  /* Search bar */
+  .search-bar input {
+    font-size: 16px; /* Prevents iOS auto-zoom */
   }
 }
 
