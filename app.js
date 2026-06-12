@@ -3,6 +3,302 @@
    Complete JavaScript Engine (HTML/CSS/JS only — no backend)
    ============================================================= */
 
+// ═══════════════════════════════════════════════════
+//  ADMIN AUTHENTICATION SYSTEM
+// ═══════════════════════════════════════════════════
+
+// Simple hash function for client-side password storage (NOT for production)
+function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+    return 'h_' + Math.abs(hash).toString(36) + '_' + str.length;
+}
+
+// Get admin accounts from localStorage
+function getAdminAccounts() {
+    return JSON.parse(localStorage.getItem('nexus_admins')) || [];
+}
+
+// Save admin accounts
+function saveAdminAccounts(accounts) {
+    localStorage.setItem('nexus_admins', JSON.stringify(accounts));
+}
+
+// Get current session
+function getSession() {
+    return JSON.parse(localStorage.getItem('nexus_session')) || null;
+}
+
+// Save session
+function saveSession(session) {
+    localStorage.setItem('nexus_session', JSON.stringify(session));
+}
+
+// Clear session
+function clearSession() {
+    localStorage.removeItem('nexus_session');
+}
+
+// ── Auth Tab Switching ──
+function switchAuthTab(tab) {
+    const loginTab = document.getElementById('authTabLogin');
+    const signupTab = document.getElementById('authTabSignup');
+    const loginPanel = document.getElementById('loginPanel');
+    const signupPanel = document.getElementById('signupPanel');
+
+    // Hide messages
+    hideAuthMessages();
+
+    if (tab === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginPanel.classList.add('active');
+        signupPanel.classList.remove('active');
+    } else {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        signupPanel.classList.add('active');
+        loginPanel.classList.remove('active');
+    }
+}
+
+// ── Password Visibility Toggle ──
+function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+    }
+}
+
+// ── Password Strength Meter ──
+function updatePasswordStrength(password) {
+    const bars = [
+        document.getElementById('str1'),
+        document.getElementById('str2'),
+        document.getElementById('str3'),
+        document.getElementById('str4')
+    ];
+    const label = document.getElementById('strengthLabel');
+
+    // Reset
+    bars.forEach(b => { b.className = 'strength-bar'; });
+    label.className = 'strength-label';
+    label.textContent = '';
+
+    if (!password) return;
+
+    let score = 0;
+    if (password.length >= 6) score++;
+    if (password.length >= 10) score++;
+    if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    const levels = [
+        { min: 1, max: 1, name: 'Weak', cls: 'weak' },
+        { min: 2, max: 2, name: 'Fair', cls: 'fair' },
+        { min: 3, max: 3, name: 'Good', cls: 'good' },
+        { min: 4, max: 5, name: 'Strong', cls: 'strong' }
+    ];
+
+    let level = levels[0];
+    for (const l of levels) {
+        if (score >= l.min && score <= l.max) { level = l; break; }
+        if (score > l.max) level = l;
+    }
+
+    const activeBars = level.cls === 'weak' ? 1 : level.cls === 'fair' ? 2 : level.cls === 'good' ? 3 : 4;
+
+    for (let i = 0; i < activeBars; i++) {
+        bars[i].classList.add('active', level.cls);
+    }
+
+    label.textContent = level.name;
+    label.classList.add(level.cls);
+}
+
+// ── Show/Hide Messages ──
+function showAuthError(msg) {
+    const el = document.getElementById('authError');
+    const txt = document.getElementById('authErrorText');
+    const success = document.getElementById('authSuccess');
+    success.classList.remove('visible');
+    txt.textContent = msg;
+    el.classList.add('visible');
+}
+
+function showAuthSuccess(msg) {
+    const el = document.getElementById('authSuccess');
+    const txt = document.getElementById('authSuccessText');
+    const error = document.getElementById('authError');
+    error.classList.remove('visible');
+    txt.textContent = msg;
+    el.classList.add('visible');
+}
+
+function hideAuthMessages() {
+    document.getElementById('authError').classList.remove('visible');
+    document.getElementById('authSuccess').classList.remove('visible');
+}
+
+// ── Handle Sign Up ──
+function handleSignup() {
+    hideAuthMessages();
+
+    const username = document.getElementById('signupUsername').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const confirm = document.getElementById('signupConfirm').value;
+
+    // Validations
+    if (!username) { showAuthError('Please enter a username.'); return; }
+    if (username.length < 3) { showAuthError('Username must be at least 3 characters.'); return; }
+    if (!email) { showAuthError('Please enter an email address.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Please enter a valid email address.'); return; }
+    if (!password) { showAuthError('Please enter a password.'); return; }
+    if (password.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+    if (password !== confirm) { showAuthError('Passwords do not match.'); return; }
+
+    const accounts = getAdminAccounts();
+
+    // Check if username already exists
+    if (accounts.find(a => a.username.toLowerCase() === username.toLowerCase())) {
+        showAuthError('This username is already taken.');
+        return;
+    }
+
+    // Check if email already exists
+    if (accounts.find(a => a.email.toLowerCase() === email.toLowerCase())) {
+        showAuthError('An account with this email already exists.');
+        return;
+    }
+
+    // Create account
+    accounts.push({
+        username,
+        email,
+        passwordHash: simpleHash(password),
+        createdAt: new Date().toISOString()
+    });
+
+    saveAdminAccounts(accounts);
+
+    // Clear form
+    document.getElementById('signupUsername').value = '';
+    document.getElementById('signupEmail').value = '';
+    document.getElementById('signupPassword').value = '';
+    document.getElementById('signupConfirm').value = '';
+    updatePasswordStrength('');
+
+    showAuthSuccess('Account created successfully! You can now sign in.');
+
+    // Auto-switch to login after a delay
+    setTimeout(() => {
+        switchAuthTab('login');
+        document.getElementById('loginUsername').value = username;
+        document.getElementById('loginUsername').focus();
+    }, 1500);
+}
+
+// ── Handle Login ──
+function handleLogin() {
+    hideAuthMessages();
+
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!username) { showAuthError('Please enter your username.'); return; }
+    if (!password) { showAuthError('Please enter your password.'); return; }
+
+    const accounts = getAdminAccounts();
+    const account = accounts.find(a => a.username.toLowerCase() === username.toLowerCase());
+
+    if (!account) {
+        showAuthError('No admin account found with that username.');
+        return;
+    }
+
+    if (account.passwordHash !== simpleHash(password)) {
+        showAuthError('Incorrect password. Please try again.');
+        return;
+    }
+
+    // Success — create session
+    const session = {
+        username: account.username,
+        email: account.email,
+        loggedInAt: new Date().toISOString()
+    };
+
+    saveSession(session);
+    enterApp(session);
+}
+
+// ── Handle Logout ──
+function handleLogout() {
+    clearSession();
+
+    // Show auth screen
+    const authScreen = document.getElementById('authScreen');
+    const appContainer = document.getElementById('appContainer');
+
+    authScreen.classList.remove('hidden');
+    appContainer.classList.add('auth-locked');
+
+    // Reset form
+    document.getElementById('loginUsername').value = '';
+    document.getElementById('loginPassword').value = '';
+    switchAuthTab('login');
+    hideAuthMessages();
+
+    // Stop simulation
+    if (simInterval) {
+        clearInterval(simInterval);
+        simInterval = null;
+    }
+}
+
+// ── Enter the App (after successful auth) ──
+function enterApp(session) {
+    const authScreen = document.getElementById('authScreen');
+    const appContainer = document.getElementById('appContainer');
+
+    // Update admin badge
+    const adminName = document.getElementById('adminName');
+    const adminAvatar = document.getElementById('adminAvatar');
+    if (adminName) adminName.textContent = session.username;
+    if (adminAvatar) adminAvatar.textContent = session.username.charAt(0).toUpperCase();
+
+    // Animate auth screen out
+    authScreen.classList.add('hidden');
+
+    // Show app after animation
+    setTimeout(() => {
+        appContainer.classList.remove('auth-locked');
+
+        // Initialize app
+        initializeApp();
+    }, 400);
+}
+
+// ── Check Auth on Load ──
+function checkAuth() {
+    const session = getSession();
+    if (session) {
+        // Already logged in
+        enterApp(session);
+    }
+    // else: auth screen stays visible
+}
+
 // ─────────────────────── STATE ───────────────────────
 let products = JSON.parse(localStorage.getItem("nexus_products")) || [];
 let salesHistory = JSON.parse(localStorage.getItem("nexus_history")) || [];
@@ -19,6 +315,12 @@ let currentSort = { key: null, asc: true };
 
 // ─────────────────────── INIT ───────────────────────
 document.addEventListener("DOMContentLoaded", () => {
+    // Check authentication first
+    checkAuth();
+});
+
+// Called after successful authentication
+function initializeApp() {
     startClock();
 
     // Load demo data if nothing exists
@@ -62,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (window.innerWidth <= 768) closeSidebar();
         });
     });
-});
+}
 
 // ─────────────────────── NAVIGATION (Page Loader) ───────────────────────
 let currentPage = null;

@@ -14,6 +14,101 @@
 
 <body>
 
+    <!-- ========== AUTH SCREEN ========== -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-bg"></div>
+        <div class="auth-particles">
+            <div class="auth-particle" style="left:10%;animation-duration:18s;"></div>
+            <div class="auth-particle" style="left:25%;animation-duration:22s;"></div>
+            <div class="auth-particle" style="left:45%;animation-duration:16s;"></div>
+            <div class="auth-particle" style="left:65%;animation-duration:20s;"></div>
+            <div class="auth-particle" style="left:80%;animation-duration:24s;"></div>
+            <div class="auth-particle" style="left:92%;animation-duration:19s;"></div>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🧠</div>
+                <h2>Stock Sense AI</h2>
+                <p>Admin Portal — Intelligent Inventory OS</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="authTabLogin" onclick="switchAuthTab('login')">Sign In</button>
+                <button class="auth-tab" id="authTabSignup" onclick="switchAuthTab('signup')">Create Account</button>
+            </div>
+
+            <!-- Error / Success messages -->
+            <div class="auth-error" id="authError">
+                <span>❌</span>
+                <span id="authErrorText"></span>
+            </div>
+            <div class="auth-success" id="authSuccess">
+                <span>✅</span>
+                <span id="authSuccessText"></span>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div class="auth-form-panel active" id="loginPanel">
+                <div class="auth-field">
+                    <label><span class="field-icon">👤</span> Username</label>
+                    <input type="text" class="auth-input" id="loginUsername" placeholder="Enter your admin username" autocomplete="username" />
+                </div>
+                <div class="auth-field">
+                    <label><span class="field-icon">🔒</span> Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="auth-input" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" onkeypress="if(event.key==='Enter')handleLogin()" />
+                        <button class="password-toggle" type="button" onclick="togglePasswordVisibility('loginPassword', this)">👁</button>
+                    </div>
+                </div>
+                <button class="auth-submit" id="loginBtn" onclick="handleLogin()">
+                    Sign In to Dashboard →
+                </button>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div class="auth-form-panel" id="signupPanel">
+                <div class="auth-field">
+                    <label><span class="field-icon">👤</span> Username</label>
+                    <input type="text" class="auth-input" id="signupUsername" placeholder="Choose an admin username" autocomplete="username" />
+                </div>
+                <div class="auth-field">
+                    <label><span class="field-icon">✉️</span> Email</label>
+                    <input type="email" class="auth-input" id="signupEmail" placeholder="admin@company.com" autocomplete="email" />
+                </div>
+                <div class="auth-field">
+                    <label><span class="field-icon">🔒</span> Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="auth-input" id="signupPassword" placeholder="Create a strong password" autocomplete="new-password" oninput="updatePasswordStrength(this.value)" onkeypress="if(event.key==='Enter')handleSignup()" />
+                        <button class="password-toggle" type="button" onclick="togglePasswordVisibility('signupPassword', this)">👁</button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="str1"></div>
+                        <div class="strength-bar" id="str2"></div>
+                        <div class="strength-bar" id="str3"></div>
+                        <div class="strength-bar" id="str4"></div>
+                    </div>
+                    <div class="strength-label" id="strengthLabel"></div>
+                </div>
+                <div class="auth-field">
+                    <label><span class="field-icon">🔑</span> Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="auth-input" id="signupConfirm" placeholder="Re-enter your password" autocomplete="new-password" onkeypress="if(event.key==='Enter')handleSignup()" />
+                        <button class="password-toggle" type="button" onclick="togglePasswordVisibility('signupConfirm', this)">👁</button>
+                    </div>
+                </div>
+                <button class="auth-submit" id="signupBtn" onclick="handleSignup()">
+                    Create Admin Account ✦
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <p>🔐 Admin access only — Secured with local encryption</p>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATIONS -->
     <div class="toast-container" id="toastContainer"></div>
 
@@ -27,7 +122,7 @@
     <!-- SIDEBAR OVERLAY (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div class="app-container">
+    <div class="app-container auth-locked" id="appContainer">
 
         <!-- ========== SIDEBAR ========== -->
         <aside class="sidebar">
@@ -37,6 +132,16 @@
                     <h1>Stock Sense AI</h1>
                     <span>Inventory OS</span>
                 </div>
+            </div>
+
+            <!-- Admin Badge -->
+            <div class="admin-badge" id="adminBadge">
+                <div class="admin-avatar" id="adminAvatar">A</div>
+                <div class="admin-info">
+                    <div class="admin-name" id="adminName">Admin</div>
+                    <div class="admin-role">Administrator</div>
+                </div>
+                <button class="admin-logout-btn" onclick="handleLogout()" title="Sign Out">🚪</button>
             </div>
 
             <nav class="sidebar-nav">
